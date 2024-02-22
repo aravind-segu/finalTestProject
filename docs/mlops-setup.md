@@ -5,10 +5,8 @@
 * [Intro](#intro)
 * [Create a hosted Git repo](#create-a-hosted-git-repo)
 * [Configure CI/CD](#configure-cicd---github-actions)
-* [Merge PR with initial ML code](#merge-a-pr-with-your-initial-ml-code)
 * [Create release branch](#create-release-branch)
 
-* [Deploy ML resources and enable production jobs](#deploy-ml-resources-and-enable-production-jobs)
 * [Next steps](#next-steps)
 
 ## Intro
@@ -31,8 +29,8 @@ git remote add upstream <hosted-git-repo-url>
 Commit the current `README.md` file and other docs to the `main` branch of the repo, to enable forking the repo:
 ```
 
-git add README.md docs .gitignore finalTestProject/resources/README.md
-git commit -m "Adding project README"
+git add .
+git commit -m "Adding CICD scaffolding"
 
 git push upstream main
 ```
@@ -62,7 +60,7 @@ For your convenience, we also have a [Terraform module](https://registry.terrafo
 #### Configure Service Principal (SP) permissions 
 If the created project uses **Unity Catalog**, we expect a catalog to exist with the name of the deployment target by default. 
 For example, if the deployment target is dev, we expect a catalog named dev to exist in the workspace. 
-If you want to use different catalog names, please update the target names declared in the[finalTestProject/databricks.yml](../finalTestProject/databricks.yml) file.
+If you want to use different catalog names, please update the target names declared in the `databricks.yml`  file.
 
 The SP must have proper permission in each respective environment and the catalog for the environments.
 
@@ -103,27 +101,9 @@ After setting up authentication for CI/CD, you can now set up CI/CD workflows. W
 This workflow is manually triggered with `project_name` as parameter. This workflow will need to be triggered for each project to set up its set of CI/CD workflows that can be used to deploy ML resources and run ML jobs in the staging and prod workspaces. 
 These workflows will be defined under `.github/workflows`.
 
+Trigger the workflow manually by running the command `gh workflow run deploy-cicd.yml` in your root folder. The workflow will then create a PR request which you can review, and merge to kick off the CI/CD pipeline in Github.
 
 
-## Merge a PR with your initial ML code
-Create and push a PR branch adding the ML code to the repository.
-
-```
-git checkout -b add-ml-code
-git add .
-git commit -m "Add ML Code"
-git push upstream add-ml-code
-```
-
-Open a PR from the newly pushed branch. CI will run to ensure that tests pass
-on your initial ML code. Fix tests if needed, then get your PR reviewed and merged.
-After the pull request merges, pull the changes back into your local `main`
-branch:
-
-```
-git checkout main
-git pull upstream main
-```
 
 ## Create release branch
 Create and push a release branch called `release` off of the `main` branch of the repository:
@@ -137,13 +117,10 @@ Your production jobs (model training, batch inference) will pull ML code against
 
 For future ML code changes, iterate against the `main` branch and regularly deploy your ML code from staging to production by merging code changes from the `main` branch into the `release` branch.
 
-## Deploy ML resources and enable production jobs
-Follow the instructions in [finalTestProject/resources/README.md](../finalTestProject/resources/README.md) to deploy ML resources
-and production jobs.
 
 ## Next steps
 After you configure CI/CD and deploy training & inference pipelines, notify data scientists working
 on the current project. They should now be able to follow the
 [ML pull request guide](ml-pull-request.md) and 
-[ML resource config guide](../finalTestProject/resources/README.md)  to propose, test, and deploy
+  to propose, test, and deploy
 ML code and pipeline changes to production.

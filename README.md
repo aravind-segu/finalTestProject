@@ -16,8 +16,6 @@ This project contains the following components:
 
 | Component                  | Description                                                                                                                                                                                                                                                                                                                                             |
 |----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ML Code                    | Example ML project code, with unit tested Python modules and notebooks                                                                                                                                                                                                                                                                             |
-| ML Resources as Code | ML pipeline resources (training and batch inference jobs with schedules, etc) configured and deployed through [databricks CLI bundles](https://docs.databricks.com/dev-tools/cli/bundle-cli.html)                                                                                              |
 | CI/CD                      | [GitHub Actions](https://github.com/actions) workflows to test and deploy ML code and resources       |
 
 contained in the following files:
@@ -25,38 +23,8 @@ contained in the following files:
 ```
 finalTestProject        <- Root directory. Both monorepo and polyrepo are supported.
 │
-├── finalTestProject       <- Contains python code, notebooks and ML resources related to one ML project. 
-│   │
-│   ├── requirements.txt        <- Specifies Python dependencies for ML code (for example: model training, batch inference).
-│   │
-│   ├── databricks.yml          <- databricks.yml is the root bundle file for the ML project that can be loaded by databricks CLI bundles. It defines the bundle name, workspace URL and resource config component to be included.
-│   │
-│   ├── training                <- Training folder contains Notebook that trains and registers the model.
-│   │
-│   ├── validation              <- Optional model validation step before deploying a model.
-│   │
-│   ├── monitoring              <- Model monitoring, feature monitoring, etc.
-│   │
-│   ├── deployment              <- Deployment and Batch inference workflows
-│   │   │
-│   │   ├── batch_inference     <- Batch inference code that will run as part of scheduled workflow.
-│   │   │
-│   │   ├── model_deployment    <- As part of CD workflow, deploy the registered model by assigning it the appropriate alias.
-│   │
-│   │
-│   ├── tests                   <- Unit tests for the ML project, including the modules under `features`.
-│   │
-│   ├── resources               <- ML resource (ML jobs, MLflow models) config definitions expressed as code, across dev/staging/prod/test.
-│       │
-│       ├── model-workflow-resource.yml                <- ML resource config definition for model training, validation, deployment workflow
-│       │
-│       ├── batch-inference-workflow-resource.yml      <- ML resource config definition for batch inference workflow
-│       │
-│       ├── ml-artifacts-resource.yml                  <- ML resource config definition for model and experiment
-│       │
-│       ├── monitoring-workflow-resource.yml           <- ML resource config definition for data monitoring workflow
 │
-├── .github                     <- Configuration folder for CI/CD using GitHub Actions.  The CI/CD workflows deploy ML resources defined in the `./resources/*` folder with databricks CLI bundles.
+├── .github                     <- Configuration folder for CI/CD using GitHub Actions. 
 │
 ├── docs                        <- Contains documentation for the repo.
 │
@@ -67,12 +35,6 @@ finalTestProject        <- Root directory. Both monorepo and polyrepo are suppor
 
 The table below links to detailed docs explaining how to use this repo for different use cases.
 
-
-This project comes with example ML code to train, validate and deploy a regression model to predict NYC taxi fares.
-If you're a data scientist just getting started with this repo for a brand new ML project, we recommend 
-adapting the provided example code to your ML problem. Then making and 
-testing ML code changes on Databricks or your local machine. Follow the instructions from
-the [project README](./finalTestProject/README.md).
  
 
 When you're ready to deploy production training/inference
@@ -80,15 +42,15 @@ pipelines, ask your ops team to follow the [MLOps setup guide](docs/mlops-setup.
 production ML pipelines.
 
 After that, follow the [ML pull request guide](docs/ml-pull-request.md)
- and [ML resource config guide](finalTestProject/resources/README.md)  to propose, test, and deploy changes to production ML code (e.g. update model parameters)
+ to propose, test, and deploy changes to production ML code (e.g. update model parameters)
 or pipeline resources (e.g. use a larger instance type for model training) via pull request.
 
 | Role                          | Goal                                                                         | Docs                                                                                                                                                                |
 |-------------------------------|------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Data Scientist                | Get started writing ML code for a brand new project                          | [project README](./finalTestProject/README.md) |
+| Data Scientist                | Get started writing ML code for a brand new project                          |  README when project is initialized |
 | MLOps / DevOps                | Set up CI/CD for the current ML project   | [MLOps setup guide](docs/mlops-setup.md)                                                                                                                            |
 | Data Scientist                | Update production ML code (e.g. model training logic) for an existing project | [ML pull request guide](docs/ml-pull-request.md)                                                                                                                    |
-| Data Scientist                | Modify production model ML resources, e.g. model training or inference jobs  | [ML resource config guide](finalTestProject/resources/README.md)  |
+| Data Scientist                | Modify production model ML resources, e.g. model training or inference jobs  |  ML resources README when project is initialized  |
 
 ## Setting up CI/CD
 This stack comes with a workflow to set up CI/CD for projects that can be found in
@@ -104,6 +66,3 @@ all steps in the [MLOps Setup Guide](./docs/mlops-setup.md#Steps) have been comp
 3. Create a new project by initializing MLOps Stacks again but this time with the `Project_Only` parameter.
 4. Run the `deploy-cicd.yml` workflow with the `project_name` parameter set to the name of the project you want to set up CI/CD for.
 
-
-NOTE: This project has already been initialized with an instantiation of the above workflow, so there's no
-need to run it again for project `finalTestProject`.

@@ -22,7 +22,8 @@ of the Git repo. Support for running tests against pull requests from repo forks
 is planned for the future.
 
 ## Viewing test status and debug logs
-Opening a pull request will trigger a[workflow](../.github/workflows/finalTestProject-run-tests.yml) 
+Opening a pull request will trigger a
+workflow 
 that runs unit and integration tests for the model training (and feature engineering if added) pipeline on Databricks against a test dataset.
 You can view test status and debug logs from the pull request UI, and push new commits to your pull request branch
 to address any test failures.
@@ -46,8 +47,8 @@ After merging your pull request, subsequent runs of the model training and batch
 jobs in staging and production will automatically use your updated ML code.
 
 You can track the state of the ML pipelines for the current project from the MLflow registered model UI. Links:
-* [Staging model in UC](https://e2-dogfood.staging.cloud.databricks.com/explore/data/models/staging/finalTestProject/finalTestProject-model)
-* [Prod model in UC](https://e2-dogfood.staging.cloud.databricks.com/explore/data/models/prod/finalTestProject/finalTestProject-model)
+* [Staging model in UC](https://e2-dogfood.staging.cloud.databricks.com/explore/data/models/staging/my_mlops_project/my_mlops_project-model)
+* [Prod model in UC](https://e2-dogfood.staging.cloud.databricks.com/explore/data/models/prod/my_mlops_project/my_mlops_project-model)
 . 
 
 In both the staging and prod workspaces, the MLflow registered model contains links to:
