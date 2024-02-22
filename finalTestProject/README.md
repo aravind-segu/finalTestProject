@@ -97,10 +97,21 @@ Otherwise, e.g. if iterating on ML code for a new project, follow the steps belo
   `dbx sync repo --profile finalTestProject-dev --source . --dest-repo your-repo-name`, where `your-repo-name` should be the last segment of the full repo name (`/Repos/username/your-repo-name`)
 
 
+
 ## Next Steps
-When you're satisfied with initial ML experimentation (e.g. validated that a model with reasonable performance can be
-trained on your dataset) and ready to deploy production training/inference
-pipelines, ask your ops team to set up CI/CD for the current ML project if they haven't already. CI/CD can be set up as part of the 
-MLOps Stacks initialization even if it was skipped in this case, or this project can be added to a repo setup with CI/CD already,
-following the directions under "Setting up CI/CD" in the repo root directory README.
+
+When you're satisfied with initial ML experimentation (e.g. validated that a model with reasonable performance can be trained on your dataset) and ready to deploy production training/inference
+pipelines, ask your ops team to set up CI/CD for the current ML project if they haven't already. CI/CD can be set up as part of the
+
+MLOps Stacks initialization even if it was skipped in this case, or this project can be added to a repo setup with CI/CD already, following the directions under "Setting up CI/CD" in the repo root directory README.
+
+To add CI/CD to this repo:
+ 1.  Run `databricks bundle init mlops-stacks` in your home directory
+ 2. Select the option to only initialize `CICD_Only`
+ 3. Provide the current root directory and answer the subsequent prompts
+
+If you already have CI/CD setup in a separate:
+1. Create a new folder in your root CI/CD repo
+1. Copy the contents of your current project folder into the new folder
+
 More details can be found on the homepage [MLOps Stacks README](https://github.com/databricks/mlops-stacks/blob/main/README.md).
