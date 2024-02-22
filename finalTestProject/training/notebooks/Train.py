@@ -58,7 +58,7 @@ dbutils.widgets.text(
 )
 # Unity Catalog registered model name to use for the trained model.
 dbutils.widgets.text(
-    "model_name", "dev.aravind_test.finalTestProject-model", label="Full (Three-Level) Model Name"
+    "model_name", "dev.finalTestProject.finalTestProject-model", label="Full (Three-Level) Model Name"
 )
 
 # COMMAND ----------

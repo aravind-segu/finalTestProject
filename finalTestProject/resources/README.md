@@ -5,9 +5,6 @@
 * [Intro](#intro)
 * [Local development and dev workspace](#local-development-and-dev-workspace)
 * [Develop and test config changes](#develop-and-test-config-changes)
-* [CI/CD](#set-up-cicd)
-* [Deploy initial ML resources](#deploy-initial-ml-resources)
-* [Deploy config changes](#deploy-config-changes)
 
 ## Intro
 
@@ -29,11 +26,12 @@ ML Resource Configurations in this directory:
 ### Deployment Config & CI/CD integration
 The ML resources can be deployed to databricks workspace based on the databricks CLI bundles deployment config.
 Deployment configs of different deployment targets share the general ML resource configurations with added ability to specify deployment target specific values (workspace URI, model name, jobs notebook parameters, etc).
-This project ships with CI/CD workflows for developing and deploying ML resource configurations based on deployment config.
+
+NOTE: This project was not setup with CI/CD workflows. You can setup CI/CD with a new initialization of MLOps Stacks. The rest of this section only applies if you are using a monorepo setup with CI/CD previously or have setup CI/CD otherwise.
 
 For Model Registry in Unity Catalog, we expect a catalog to exist with the name of the deployment target by default. For example, if the deployment target is `dev`, we expect a catalog named `dev` to exist in the workspace. 
 If you want to use different catalog names, please update the `targets` declared in the `finalTestProject/databricks.yml` and `finalTestProject/resources/ml-artifacts-resource.yml` files.
-If changing the `staging`, `prod`, or `test` deployment targets, you'll need to update the workflows located in the `.github/workflows` directory.
+If changing the `staging`, `prod`, or `test` deployment targets, you'll need to update the workflows located in the root directory if in a monorepo setup with CI/CD. Otherwise you can setup CI/CD with a new initialization of MLOps Stacks.
 
 
 | Deployment Target | Description                                                                                                                                                                                                                           | Databricks Workspace | Model Name                          | Experiment Name                                |
@@ -51,7 +49,6 @@ The PR will trigger Python unit tests, followed by an integration test executed 
 Upon merging a PR to the main branch, the main branch content will be deployed to the staging workspace with `staging` environment resource configurations.
 
 Upon merging code into the release branch, the release branch content will be deployed to prod workspace with `prod` environment resource configurations.
-![ML resource config diagram](../../docs/images/mlops-stack-deploy.png)
 
 ## Local development and dev workspace
 
@@ -76,25 +73,6 @@ Alternatively, you can use the other approaches described in the [databricks CLI
 
 ### Destroy ML resource configurations
 After development is done, you can run `databricks bundle destroy` to destroy (remove) the defined Databricks resources in the dev workspace. Any model version with `Production` or `Staging` stage will prevent the model from being deleted. Please update the version stage to `None` or `Archived` before destroying the ML resources.
-## Set up CI/CD
-Please refer to [mlops-setup](../../docs/mlops-setup.md#configure-cicd) for instructions to set up CI/CD.
-
-## Deploy initial ML resources
-After completing the prerequisites, create and push a PR branch adding all files to the Git repo:
-```
-git checkout -b add-ml-resource-config-and-code
-git add .
-git commit -m "Add ML resource config and ML code"
-git push upstream add-ml-resource-config-and-code
-```
-Open a pull request to merge the pushed branch into the `main` branch.
-Upon creating this PR, the CI workflows will be triggered.
-These CI workflow will run unit and integration tests of the ML code, 
-in addition to validating the Databricks resources to be deployed to both staging and prod workspaces.
-Once CI passes, merge the PR into the `main` branch. This will deploy an initial set of Databricks resources to the staging workspace.
-resources will be deployed to the prod workspace on pushing code to the `release` branch.
-
-Follow the next section to configure the input and output data tables for the batch inference job.
 
 ### Setting up the batch inference job
 The batch inference job expects an input Delta table with a schema that your registered model accepts. To use the batch
@@ -217,18 +195,5 @@ To test out a config change, simply edit one of the fields above. For example, i
 
 Then follow [Local development and dev workspace](#local-development-and-dev-workspace) to deploy the change to the dev workspace.
 Alternatively you can open a PR. Continuous integration will then validate the updated config and deploy tests to the to staging workspace.
-## Deploy config changes
-
-### Dev workspace deployment
-Please refer to [Local development and dev workspace](#local-development-and-dev-workspace).
-
-### Test workspace deployment(CI)
-After setting up CI/CD, PRs against the main branch will trigger CI workflows to run unit tests, integration test and resource validation.
-The integration test will deploy MLflow model, MLflow experiment and Databricks workflow resources defined under the `test` environment resource config to the staging workspace. The integration test then triggers a run of the model workflow to verify the ML code. 
-
-### Staging and Prod workspace deployment(CD)
-After merging a PR to the main branch, continuous deployment automation will deploy the `staging` resources to the staging workspace.
-
-When you about to cut a release, you can create and merge a PR to merge changes from main to release. Continuous deployment automation will deploy `prod` resources to the prod workspace.
 
 [Back to project README](../README.md)
