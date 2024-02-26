@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - 'finalTestProject/**'
-      - '.'
+      - '.github/workflows/finalTestProject-run-tests.yml'
       
 defaults:
   run:
