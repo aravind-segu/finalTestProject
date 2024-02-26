@@ -2,7 +2,9 @@ name: Training Unit and Integration Tests for finalTestProject
 on:
   workflow_dispatch:
   pull_request:
-
+    paths:
+      - 'finalTestProject/**'
+      
 defaults:
   run:
     working-directory: ./finalTestProject/
