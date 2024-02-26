@@ -17,7 +17,7 @@ resources:
       model:
         name: ${var.model_name}
         catalog_name: ${bundle.target}
-        schema_name: aravind_test
+        schema_name: finalTestProject
         comment: Registered model in Unity Catalog for the "finalTestProject" ML Project for ${bundle.target} deployment target.
         <<: *grants
         depends_on:
