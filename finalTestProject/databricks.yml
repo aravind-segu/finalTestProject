@@ -25,3 +25,14 @@ targets:
       host:
 
 
+  temp:
+    workspace:
+      host: https://e2-dogfood.staging.cloud.databricks.com
+
+  main2:
+    workspace:
+      host: https://e2-dogfood.staging.cloud.databricks.com
+
+  test:
+    workspace:
+      host: https://e2-dogfood.staging.cloud.databricks.com
