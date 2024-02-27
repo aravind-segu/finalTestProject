@@ -20,7 +20,7 @@ jobs:
       - name: Get current timestamp
         id: timestamp
         run: |
-          echo "timestamp=$(date +'%s')" >> $GITHUB_ENV
+          echo "timestamp=$(date +'%s')" >> "$GITHUB_ENV"
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
@@ -47,7 +47,7 @@ jobs:
       - name: Update databricks.yml
         id: update
         run: |
-          echo -e "  temp:\n    workspace:\n      host: https://e2-dogfood.staging.cloud.databricks.com\n\n  main2:\n    workspace:\n      host: https://e2-dogfood.staging.cloud.databricks.com\n\n  test:\n    workspace:\n      host: https://e2-dogfood.staging.cloud.databricks.com" >> "$PROJECT_NAME_ALPHA/databricks.yml"
+          echo -e "  main2:\n    workspace:\n      host: https://e2-dogfood.staging.cloud.databricks.com\n\n  main:\n    workspace:\n      host: https://e2-dogfood.staging.cloud.databricks.com\n\n  temp:\n    workspace:\n      host: https://e2-dogfood.staging.cloud.databricks.com" >> "$PROJECT_NAME_ALPHA/databricks.yml"
       - name: Initialize Bundle
         id: initialize
         run: |
